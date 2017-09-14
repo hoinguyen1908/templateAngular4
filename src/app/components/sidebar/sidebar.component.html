@@ -1,0 +1,43 @@
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
+  <ul class="list-group">
+    <a routerLink="/home" [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-fw fa-dashboard"></i>&nbsp;{{ 'Dashboard' | translate }}
+    </a>
+    <a routerLink="/users" [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;{{ 'User' | translate }}
+    </a>
+    <a routerLink="/transactions" [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-fw fa-table"></i>&nbsp;{{ 'Transaction' | translate }}
+    </a>
+    <!--<a routerLink="/login" [routerLinkActive]="['router-link-active']" class="list-group-item">-->
+      <!--<i class="fa fa-fw fa-edit"></i>&nbsp;{{ 'forms' | translate }}-->
+    <!--</a>-->
+    <!--<a (click)="sendData()" class="list-group-item">-->
+      <!--<i class="fa fa-fw fa-desktop"></i>&nbsp;{{ 'boostrapElement' | translate }}-->
+    <!--</a>-->
+    <!--<a [routerLink]="['/grid']" [routerLinkActive]="['router-link-active']" class="list-group-item">-->
+      <!--<i class="fa fa-fw fa-wrench"></i>&nbsp;{{ 'boostrapGrid' | translate }}-->
+    <!--</a>-->
+    <!--<a [routerLink]="['/components']" [routerLinkActive]="['router-link-active']" class="list-group-item">-->
+      <!--<i class="fa fa-th-list"></i>&nbsp;{{ 'component' | translate }}-->
+    <!--</a>-->
+    <div class="nested-menu">
+      <a class="list-group-item" (click)="addExpandClass('pages')">
+        <span><i class="fa fa-plus"></i>&nbsp;{{ 'Setting' | translate }}</span>
+      </a>
+      <li class="nested" [class.expand]="showMenu === 'pages'">
+        <ul class="submenu">
+          <li>
+            <a href="javascript:void(0)"><span>{{ 'Profile' | translate }}</span></a>
+          </li>
+          <li>
+            <a href="javascript:void(0)"><span>{{ 'System Config' | translate }}</span></a>
+          </li>
+        </ul>
+      </li>
+    </div>
+    <!--<a class="list-group-item more-themes">-->
+      <!--{{ 'Logout' | translate }}-->
+    <!--</a>-->
+  </ul>
+</nav>

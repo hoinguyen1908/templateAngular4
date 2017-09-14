@@ -1,0 +1,63 @@
+<div class="container-fluid w-100 h-100">
+
+  <div class="row row-eq-height p-2 justify-content-between">
+    <div class="col-sm-4 col-xl-3">
+      <div class="content-group rounded p-1 m-1">
+        <div style="display: block;">
+          <canvas baseChart width="300" height="300"
+                  [datasets]="lineChartData"
+                  [labels]="lineChartLabels"
+                  [options]="lineChartOptions"
+                  [colors]="lineChartColors"
+                  [legend]="lineChartLegend"
+                  [chartType]="lineChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4 col-xl-3">
+      <div class="content-group rounded p-1 m-1">
+        <div style="display: block;">
+          <canvas baseChart
+                  [data]="doughnutChartData"
+                  [labels]="doughnutChartLabels"
+                  [chartType]="doughnutChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-4 col-xl-3">
+      <div class="content-group rounded p-1 m-1">
+        <div style="display: block;">
+          <canvas baseChart
+                  [datasets]="radarChartData"
+                  [labels]="radarChartLabels"
+                  [chartType]="radarChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="content-group rounded p-1 m-1">
+        <mwl-calendar-month-view
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"
+          [activeDayIsOpen]="activeDayIsOpen"
+          (dayClicked)="dayClicked($event.day)"
+          (eventClicked)="handleEvent('Clicked', $event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)">
+        </mwl-calendar-month-view>
+      </div>
+    </div>
+  </div>
+</div>

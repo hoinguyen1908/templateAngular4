@@ -1,0 +1,7 @@
+{
+  "APP_NAME": "<%= props.appName %>",
+  "Version": "Version",
+  "Home": "translate to news ",
+  "About": "About",
+  "LOGIN": "LOGIN"
+}

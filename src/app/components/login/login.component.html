@@ -1,0 +1,151 @@
+<div class="container-fluid full-height">
+  <div class="row h-100 align-items-center justify-content-center">
+    <div class="col-sm-10 col-md-8 col-lg-6 col-xl-4">
+      <!--LOGIN FORM-->
+      <div class="login-form rounded">
+
+        <h1 translate class="text-center">LOGIN</h1>
+
+        <form [formGroup]="loginForm" class="form-horizontal" (submit)="submitLogin($event)">
+          <div class="form-group row">
+            <label class="col-sm-2 pt-2 control-label">Email</label>
+            <!--INPUT USERNAME-->
+            <div class="col-sm-10">
+              <input formControlName="username" id="username" type="email" class="form-control" placeholder="Username"
+                     autocomplete="off" [(ngModel)]="username" (focus)="refreshError()">
+            </div>
+            <!--VALIDATION USERNAME-->
+            <div class="col-sm-10 offset-sm-2"
+                 *ngIf="loginForm.get('username').hasError('pattern') && loginForm.controls['username'].touched">
+              <div class="alert alert-danger">
+                Username invalid format
+              </div>
+            </div>
+            <div class="col-sm-10 offset-sm-2"
+                 *ngIf="loginForm.get('username').hasError('required') && loginForm.controls['username'].touched">
+              <div class="alert alert-danger">
+                Username required
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 pt-2 control-label">Password</label>
+            <!-- INPUT PASSWORD -->
+            <div class="col-sm-10">
+              <input type="password" formControlName="password" id="password" class="form-control"
+                     placeholder="password" autocomplete="new password" [(ngModel)]="password" (focus)="refreshError()"
+                     maxlength="32">
+            </div>
+            <!-- VALIDATION PASSWORD -->
+            <div class="col-sm-10 offset-sm-2"
+                 *ngIf="loginForm.get('password').hasError('required') && loginForm.controls['password'].touched">
+              <div class="alert alert-danger">
+                Password is required
+              </div>
+            </div>
+            <div class="col-sm-10 offset-sm-2"
+                 *ngIf="(loginForm.get('password').hasError('minlength') || loginForm.get('password').hasError('maxlength')) && loginForm.controls['password'].touched">
+              <div class="alert alert-danger">
+                Password size from 6 - 32 characters.
+              </div>
+            </div>
+          </div>
+          <div class="form-group row " *ngIf="loginError === ERROR_TYPE.USER_PASS_INVALID">
+            <div class="col-sm-12">
+              <div class="alert alert-danger">
+                Username and password incorrect. You have {{retrytime}} time to retry.
+              </div>
+            </div>
+          </div>
+          <div class="form-group row " *ngIf="loginError === ERROR_TYPE.USER_IS_BANNED">
+            <div class="col-sm-12">
+              <div class="alert alert-danger">
+                Your account has been banned. Please contact customer service to unlock your account.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="offset-sm-2 col-sm-10">
+              <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary">LOGIN</button>
+              <a routerLink="/login" class="forgot-pass btn btn-link" translate>Forgot password?</a>
+            </div>
+          </div>
+        </form>
+        <div class="auth-sep"><span><span translate></span></span></div>
+      </div>
+
+
+      <!--OTP FORM-->
+      <ng-template #otp_content>
+        <div class="login-form rounded">
+          <h1 translate class="text-center">OTP CODE</h1>
+          <form [formGroup]="OTPForm" class="form-horizontal" (submit)="submitOTP($event)">
+            <div class="form-group row">
+              <div class="col-sm-12 text-center">
+                Your OTP code was sent to phone number: {{phoneNumber}}
+              </div>
+              <!--<label class="col-sm-2 pt-2 control-label">OTP</label>-->
+              <!--INPUT OTP-->
+              <div class="col-sm-12">
+                <input formControlName="otpCode" id="otpCode" type="text" class="form-control"
+                       placeholder="Security code"
+                       autocomplete="off" [(ngModel)]="otpCode" [disabled]="otpError == ERROR_TYPE.FORCE_LOGOUT" maxlength="10">
+              </div>
+              <!--VALIDATION OTP-->
+              <div class="col-sm-12"
+                   *ngIf="OTPForm.get('otpCode').hasError('pattern') && OTPForm.controls['otpCode'].touched">
+                <div class="alert alert-danger">
+                  OTP is invalid format
+                </div>
+              </div>
+              <div class="col-sm-12"
+                   *ngIf="OTPForm.get('otpCode').hasError('required') && OTPForm.controls['otpCode'].touched">
+                <div class="alert alert-danger">
+                  OTP is required
+                </div>
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="otpError == ERROR_TYPE.OTP_INVALID">
+              <div class="col-sm-12">
+                <div class="alert alert-danger">
+                  OTP is invalid, please try again. Your have {{retrytimeOTP}} to retry.
+                </div>
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="otpError == ERROR_TYPE.FORCE_LOGOUT">
+              <div class="col-sm-12">
+                <div class="alert alert-danger">
+                  Your token has expired. Please login again.
+                  <button type="button" class="btn btn-link" (click)="refreshForm()" aria-label="Close">
+                    LOGIN
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!--SUBMIT OTP-->
+            <div class="form-group row">
+              <div class="col-sm-12 text-center">
+                <button type="submit" [disabled]="!OTPForm.valid || otpError == ERROR_TYPE.FORCE_LOGOUT"
+                        class="btn btn-primary">Submit
+                </button>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-12 text-center">
+                <h6>
+                  You did not get OTP
+                  <button class="btn btn-link" (click)="resendOTP()" [disabled]="countdownResend > 0">Resend OTP
+                    {{countdownResend > 0 ?'('+countdownResend+'s)' : ''}}
+                  </button>
+                </h6>
+              </div>
+            </div>
+          </form>
+          <div class="auth-sep"><span><span translate></span></span></div>
+        </div>
+      </ng-template>
+    </div>
+
+  </div>
+</div>
